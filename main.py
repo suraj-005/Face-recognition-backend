@@ -10,7 +10,7 @@ import face_recognition
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_cors import cross_origin
-
+import pdfkit
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -118,6 +118,9 @@ def get_attendance_logs():
 @app.route('/', methods=['GET'])
 @cross_origin()
 def helloWorld():
+    path_to_wkhtmltopdf = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+    config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
+    pdfkit.from_file("sample.html", "sample_file1.pdf",configuration=config)
     return "Hello World"
 
 def recognize(img):
@@ -155,4 +158,5 @@ def recognize(img):
     else:
         return 'unknown_person', False
 
-
+if __name__ == "__main__":
+    app.run()
